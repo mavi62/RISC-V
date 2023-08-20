@@ -380,5 +380,3 @@ chmod 777 rv32im.sh
 ![11](https://github.com/mavi62/IIITB_VLSI/assets/57127783/795ece9c-a30f-4f89-a89c-1f4a52f19e3f)
 
 </details>
-
-## Day 3
