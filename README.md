@@ -498,3 +498,285 @@ The function table is given below :
 <summary >Lab for Sequential  logic </summary>
 
 A sequential circuit is a type of digital circuit that employs memory elements to store information and produce outputs based not only on the current input values but also on the circuit's previous state. Unlike combinational circuits, which generate outputs solely based on the present input values, sequential circuits incorporate feedback loops and memory elements like flip-flops or registers to maintain and utilize their internal state.
+
+## Fibonacci Series
+
+The TL-Verilog code for fibonacci series is shown below :
+```
+   $reset = *reset;
+   $num[31:0] = $reset ? 1 : (>>1$num + >>2$num);
+```
+
+The block diagram of the fibonacci series generator is shown below :
+
+![15](https://github.com/mavi62/IIITB_VLSI/assets/57127783/3d1e3090-6c65-46c6-b2d7-8c732c5fd7cf)
+
+![14](https://github.com/mavi62/IIITB_VLSI/assets/57127783/b9d9a316-6a1b-4ee4-990a-74c3d1cdc105)
+
+## Free running counter
+
+The TL-Verilog code for free running counter is shown below :
+```
+   $reset = *reset;
+   $cnt[31:0] = $reset ? 0 : (>>1$cnt + 1);
+```
+
+The block diagram of the free running counter is shown below :
+
+![16](https://github.com/mavi62/IIITB_VLSI/assets/57127783/8c79ba62-ddd3-46e2-ad20-3d0c49e1ee5f)
+
+![17](https://github.com/mavi62/IIITB_VLSI/assets/57127783/0e0f4200-862d-42ee-a585-e51e0eae1f78)
+
+## Sequential Calculator
+
+The TL-verilog code for sequential calculator is shown below :
+
+```
+   $reset = *reset;
+   
+   $cnt2[2:0] = $reset ? 0 : (>>1$cnt2 + 1);
+   $cnt3[1:0] = $reset ? 0 : (>>1$cnt3 + 1);
+   
+   $op[1:0] = $cnt3;
+   
+   $val1[31:0] = >>1$out;
+   $val2[31:0] = $cnt2;
+   $sum[31:0] = $val1+$val2;
+   $diff[31:0] = $val1-$val2;
+   $prod[31:0] = $val1*$val2;
+   $div[31:0] = $val1/$val2;
+   
+   $out[31:0] = $reset ? 32'h0 : ($op[1] ? ($op[0] ? $div : $prod):($op[0] ? $diff : $sum));
+```
+
+This code works like the normal calculator in which the result of the previous operation is considered as one of the operand for the next operation. Upon reset the result becomes zero.
+
+![18](https://github.com/mavi62/IIITB_VLSI/assets/57127783/d5a2e539-fd90-454b-ad8f-ce738c081939)
+
+</details>
+<details >
+<summary >Pipelining</summary>
+
+Pipelining is a technique used in computer architecture and digital system design to enhance the efficiency of processing by dividing a complex task into smaller, sequential stages. Each stage performs a specific operation on the data, and these stages are arranged in a pipeline. Pipelining enables multiple instructions or tasks to be executed concurrently, with different stages of different instructions being processed simultaneously. In a pipelined architecture, the processing of an instruction is divided into several stages. This allows for overlapping the execution of multiple instructions, reducing the overall time needed to complete a sequence of tasks.
+
+![19](https://github.com/mavi62/IIITB_VLSI/assets/57127783/696554ea-d6f4-44de-aee9-68263993499e)
+
+## Pipelined Pythagorean
+
+The TL-Verilog code is given below:
+```
+\m5_TLV_version 1d: tl-x.org
+\m5
+   
+   // =================================================
+   // Welcome!  New to Makerchip? Try the "Learn" menu.
+   // =================================================
+   
+   //use(m5-1.0)   /// uncomment to use M5 macro library.
+\SV
+   // Macro providing required top-level module definition, random
+   // stimulus support, and Verilator config.
+   m5_makerchip_module   // (Expanded in Nav-TLV pane.)
+   
+   `include "sqrt32.v"
+\TLV
+   $reset = *reset;
+   $aa = $rand1[3:0];
+   $bb = $rand2[3:0];
+   |calc
+      @1
+         $aa_sq[31:0] = $aa * $aa;
+      @2
+         $bb_sq[31:0] = $bb * $bb;
+      @3
+         $cc_sq[31:0] = $aa_sq + $bb_sq;
+      @4
+         $out[31:0] = sqrt($cc_sq);
+   
+   // Assert these to end simulation (before Makerchip cycle limit).
+   *passed = *cyc_cnt > 40;
+   *failed = 1'b0;
+\SV
+   endmodule
+```
+
+![20](https://github.com/mavi62/IIITB_VLSI/assets/57127783/61da6174-89ab-4d8d-96be-8299d30ad89f)
+
+## Error Detection Demo
+
+The TL-Verilog code is given below :
+
+```
+|comp
+      @1
+         $err1 = $bad_input || $illegeal_op;
+      @3
+         $err2 = $err1 || $over_flow;
+      @6
+         $err3 = $err2 || $div_by_zer0;
+
+```
+
+![21](https://github.com/mavi62/IIITB_VLSI/assets/57127783/cc221b42-ee18-4c0b-8b3f-39af4188d0a6)
+
+## Counter and Calculator in Pipeline
+
+The block diagram of the counter with calculator in pipeline is shown below :
+
+![22](https://github.com/mavi62/IIITB_VLSI/assets/57127783/656d7690-d50b-4e6a-9f48-52e7fb6512ce)
+
+The TL-Verilog code is given below :
+
+```
+   $reset = *reset;
+   $op[1:0] = $random[1:0];
+   $val2[31:0] = $rand2[3:0];
+   
+   |calc
+      @1
+         $val1[31:0] = >>1$out;
+         $sum[31:0] = $val1+$val2;
+         $diff[31:0] = $val1-$val2;
+         $prod[31:0] = $val1*$val2;
+         $div[31:0] = $val1/$val2;
+         $out[31:0] = $reset ? 32'h0 : ($op[1] ? ($op[0] ? $div : $prod):($op[0] ? $diff : $sum));
+         
+         $cnt[31:0] = $reset ? 0 : (>>1$cnt + 1); 
+
+```
+
+![23](https://github.com/mavi62/IIITB_VLSI/assets/57127783/17f6aab7-f685-40ef-b3c8-3366e0f677a8)
+
+## 2 Cycle Calculator
+
+The block diagram of the 2 cycle calculator is shown below:
+
+![24](https://github.com/mavi62/IIITB_VLSI/assets/57127783/07edd127-8788-4cf4-9be6-33da50c41fb5)
+
+The TL-verilog code is shown below :
+```
+   $reset = *reset;
+   $op[1:0] = $random[1:0];
+   $val2[31:0] = $rand2[3:0];
+   
+   |calc
+      @1
+         $val1[31:0] = >>2$out;
+         $sum[31:0] = $val1+$val2;
+         $diff[31:0] = $val1-$val2;
+         $prod[31:0] = $val1*$val2;
+         $div[31:0] = $val1/$val2;
+         $valid = $reset ? 0 : (>>1$valid + 1);
+      @2
+         $out[31:0] = ($reset | ~($valid))  ? 32'h0 : ($op[1] ? ($op[0] ? $div : $prod):($op[0] ? $diff : $sum));
+```
+
+![25](https://github.com/mavi62/IIITB_VLSI/assets/57127783/88af6add-0e07-4ae0-9ca1-06b68f3e68f2)
+
+## Validity
+
+In Transaction-Level Verilog (TL-Verilog), validity is a concept used to track the state and timing of transactions within a design description. In TL-Verilog, transactions are used to represent higher-level actions or events that occur in a design. A transaction typically consists of a set of signals that represent the data and control information associated with that action. Validity, refers to whether a transaction is considered "valid" or "invalid" based on the state of its associated signals.
+
+## Clock Gating
+
+Clock gating is a power-saving technique used in digital circuit design to reduce power consumption by controlling the clock signal distribution to specific circuit blocks. The goal of clock gating is to minimize unnecessary clock transitions in parts of a circuit that are not actively performing computations or tasks, thus conserving energy. In digital systems, the clock signal is used to synchronize the operations of various components within the circuit. However, not all components need to be active and consuming power during every clock cycle. In fact, many components spend a significant amount of time in idle or low-power states. Clock gating takes advantage of this fact by selectively enabling or disabling the clock signal to certain portions of the circuit based on their activity status. The basic idea of clock gating involves inserting a logic gate (often an AND gate) in the clock path. The control signal for this gate determines whether the clock signal is allowed to pass through or not. If the control signal is active (high), the clock gate is open, and the clock signal reaches the circuit block. If the control signal is inactive (low), the clock gate is closed, effectively stopping the clock from reaching the circuit block.
+
+## Distance Accumulator
+
+The block diagram of the distance accumulator is shown below :
+
+![26](https://github.com/mavi62/IIITB_VLSI/assets/57127783/7adb576b-cb75-45da-84d4-a6efb786dabe)
+
+The TL-Verilog code is given below:
+
+``` 
+    |calc
+      @1
+         $reset = *reset;
+      ?$valid
+         @1
+            $aa_sq[31:0] = $aa[3:0] * $aa;
+            $bb_sq[31:0] = $bb[3:0] * $bb;
+         @2
+            $cc_sq[31:0] = $aa_sq + $bb_sq;
+         @3
+            $out[31:0] = sqrt($cc_sq);
+       @4
+          $tot_dist[31:0] = $reset ? '0 : ($valid ? (>>1$tot_dist + $out) : $RETAIN);
+```
+
+Once the valid signal is asserted the previous value of result will be added with the current value and it result will get updated otherwise the previous value is retained.
+
+![new_2](https://github.com/mavi62/IIITB_VLSI/assets/57127783/69c5d620-70ee-4d67-95a0-7cfe5b85e188)
+
+## 2 Cycle Calculator with Validity
+
+The block diagram of 2 Cycle calculator with validity is shown below :
+
+![new_3](https://github.com/mavi62/IIITB_VLSI/assets/57127783/bc5ce0f5-6d2e-4236-bf85-1ca4c5e76da4)
+
+The TL-Verilog code is given below :
+
+```
+   $reset = *reset;
+   |calc
+      @1
+         $valid = $reset ? 0 : >>1$valid+1;
+         $valid_or_reset = $valid || $reset;
+      ?$valid_or_reset
+         @1
+            $val1[31:0] = >>2$out;
+            $sum[31:0] = $val1+$val2;
+            $diff[31:0] = $val1-$val2;
+            $prod[31:0] = $val1*$val2;
+            $div[31:0] = $val1/$val2;
+            $valid = $reset ? 0 : (>>1$valid + 1);
+         @2
+            $out[31:0] = $reset  ? 32'h0 : ($op[1] ? ($op[0] ? $div : $prod):($op[0] ? $diff : $sum));
+```
+
+![27](https://github.com/mavi62/IIITB_VLSI/assets/57127783/05dafa6d-9c04-48f1-a373-17e2a0f4d749)
+
+## Calculator with Single Value Memory
+
+The block diagram of calculator with single value memory is shown below :
+
+![new_1](https://github.com/mavi62/IIITB_VLSI/assets/57127783/ae9b83b5-f128-4fa9-8eb0-5554cfcf7f4e)
+
+The TL-Verilog code is given below:
+
+```
+   |calc
+      @0
+         $reset = *reset;
+         
+      @1
+         $val1 [31:0] = >>2$out;
+         $val2 [31:0] = $rand2[3:0];
+         
+         $valid = $reset ? 1'b0 : >>1$valid + 1'b1 ;
+         $valid_or_reset = $valid || $reset;
+         
+      ?$vaild_or_reset
+         @1   
+            $sum [31:0] = $val1 + $val2;
+            $diff[31:0] = $val1 - $val2;
+            $prod[31:0] = $val1 * $val2;
+            $div[31:0] = $val1 / $val2;
+            
+         @2   
+            $mem[31:0] = $reset ? 32'b0 :
+                         ($op[2:0] == 3'b101) ? $val1 : >>2$mem ;
+            
+            $out [31:0] = $reset ? 32'b0 :
+                          ($op[2:0] == 3'b000) ? $sum :
+                          ($op[2:0] == 3'b001) ? $diff :
+                          ($op[2:0] == 3'b010) ? $prod :
+                          ($op[2:0] == 3'b011) ? $quot :
+                          ($op[2:0] == 3'b100) ? >>2$mem : >>2$out ;
+
+```
+
+![28](https://github.com/mavi62/IIITB_VLSI/assets/57127783/3582081b-ef25-406b-8f24-7b4b45f16c56)
+
+</details>
