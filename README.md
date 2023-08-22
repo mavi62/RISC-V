@@ -509,9 +509,9 @@ The TL-Verilog code for fibonacci series is shown below :
 
 The block diagram of the fibonacci series generator is shown below :
 
-![15](https://github.com/mavi62/IIITB_VLSI/assets/57127783/3d1e3090-6c65-46c6-b2d7-8c732c5fd7cf)
-
 ![14](https://github.com/mavi62/IIITB_VLSI/assets/57127783/b9d9a316-6a1b-4ee4-990a-74c3d1cdc105)
+
+![15](https://github.com/mavi62/IIITB_VLSI/assets/57127783/3d1e3090-6c65-46c6-b2d7-8c732c5fd7cf)
 
 ## Free running counter
 
