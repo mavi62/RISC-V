@@ -8,6 +8,8 @@ This github repository summarizes the progress made in the RISCV - ISA program. 
 
 [Day 3 : Digital Logic with TL-Verilog and Makerchip](#day-3)
 
+[Day 4 : Basic RISC-V CPU Micro-Architecture](#day-4)
+
 ## Day 1 
 
 <details> 
@@ -780,3 +782,5 @@ The TL-Verilog code is given below:
 ![28](https://github.com/mavi62/IIITB_VLSI/assets/57127783/3582081b-ef25-406b-8f24-7b4b45f16c56)
 
 </details>
+
+## Day 4
