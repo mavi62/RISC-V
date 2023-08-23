@@ -10,6 +10,8 @@ This github repository summarizes the progress made in the RISCV - ISA program. 
 
 [Day 4 : Basic RISC-V CPU Micro-Architecture](#day-4)
 
+[Day 5 : Pipelined RISC-V CPU Micro-architecture](#day-5)
+
 ## Day 1 
 
 <details> 
@@ -797,6 +799,7 @@ The block diagram of a basic RISC-V microarchitecture is as shown in figure belo
 
 ![1](https://github.com/mavi62/RISC-V/assets/57127783/b6248195-d15a-4508-98c7-739e6474465c)
 
+</details>
 <details>
 <summary>Lab on different components</summary>
   
@@ -1797,3 +1800,11 @@ The TL-Verilog Code is given below :
 ```
 
 ![8](https://github.com/mavi62/RISC-V/assets/57127783/91f70aa2-de86-4b21-9ab9-7c4214f55a38)
+
+</details>
+
+## Day 5
+
+<details> 
+<summary>Pipelining the CPU</summary>
+
